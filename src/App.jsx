@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const App = () => {
 
     const [users, setUsers] = useState([]);
+
+    let inputRef = useRef(null);
+    let videoRef = useRef(null);
 
 
     const getUsers = url => {
@@ -55,12 +58,17 @@ const App = () => {
         console.log('Users han sido actualizados');
     }, [users]);
 
+    const asignarMensaje = () => {
+        inputRef.value = "Vamos a programar...";
+        inputRef.type = 'password';
+    }
+
     return (
         <>
             <h1>App Component</h1>
             <ul>
                 {
-                    users.length == 0 ? (
+                    users.length === 0 ? (
                         <li>Cargando...</li>
                     ):
                     users.map((user) => {
@@ -70,6 +78,26 @@ const App = () => {
                     })
                 }
             </ul>
+            <video width="320" height="240" controls ref={(t) => videoRef = t } />
+            <input type="text" name="mensaje" placeholder="Ingrese su mensaje" ref={(t) => inputRef = t } />
+            <button onClick={() => {
+                alert(inputRef.value);
+            }}>Enviar Mensaje</button>
+            <button onClick={() => {
+                asignarMensaje();
+            }}>Mensaje por Defecto</button>
+            <button onClick={() => {
+                videoRef.src = "/videos/video1.mp4";
+                videoRef.play();
+            }}>
+                Cargar Video 1
+            </button>
+            <button onClick={() => {
+                videoRef.src = "/videos/video2.mp4";
+                videoRef.play();
+            }}>
+                Cargar Video 2
+            </button>
         </>
     )
 }
